@@ -8,12 +8,10 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
@@ -22,21 +20,26 @@ public class Main {
 
     // global variables;
     static int[] scores;
-    static HashSet<Integer> set = new HashSet<>();
+    static HashSet<Integer> uniqueBooks = new HashSet<>();
     static int totalBooks;
     static int totalLibrary;
     static int totalDayToProcess;
     static ArrayList<Library> libraries = new ArrayList<>();
-
-    static String fileName;
+    static String activeFile;
+    static int filePoints;
+    static int totalPoints;
 
     public static void main(String[] args) throws IOException {
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        System.out.println("GOOGLE HASHCODE 2020 ONLINE QUALIFICATION ROUND STATEMENT SOLUTION");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
 
         List<String> files = collectFiles();
 
         for (String file : files) {
 
-            fileName = file;
+            filePoints = 0;
+            activeFile = file;
 
             String input = readFile();
 
@@ -44,20 +47,29 @@ public class Main {
 
             signUpAndShipBooks();
 
+            orderLibrariesBasedOnNumberOfInProgressDays();
+
             String[] outputs = prepareOutput();
 
             writeToFile(outputs);
+            totalPoints += filePoints;
         }
+        System.out.println();
+        System.out.println(String.format("TOTAL SCORE %8d", totalPoints));
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+    }
 
+    private static void orderLibrariesBasedOnNumberOfInProgressDays() {
+        libraries.sort((l, r) -> Integer.compare(r.daysInProgress, l.daysInProgress));
     }
 
     private static List<String> collectFiles() {
         List<String> files = new ArrayList<>();
         files.add("a_example.txt");
-        //files.add("b_read_on.txt");
-        //files.add("c_incunabula.txt");
-        //files.add("d_tough_choices.txt");
-        //files.add("e_so_many_books.txt");
+        files.add("b_read_on.txt");
+        files.add("c_incunabula.txt");
+        files.add("d_tough_choices.txt");
+        files.add("e_so_many_books.txt");
         files.add("f_libraries_of_the_world.txt");
         return files;
     }
@@ -68,32 +80,41 @@ public class Main {
         // sort libraries as initial process
         sortLibraries();
 
+        Library libraryInProgress = libraries.get(0);
         for (int d = 1; d <= totalDayToProcess; d++) {
             int signUpItem = -1;
             for (int l = 0; l < libraries.size(); l++) {
                 Library library = libraries.get(l);
                 if (signUpItem == -1 && library.daysInProgress < library.signUpDays) {
                     signUpItem = l;
-                    library.daysInProgress++;
+                    libraryInProgress = library;
+                    library.incrementDaysInProgress(); // sign up in progress
                 } else {
                     if (library.daysInProgress >= library.signUpDays && !library.booksToShip.isEmpty()) {
-                        library.shipBooks();
-                        library.daysInProgress++;
+                        library.shipBooks(); // ship books if any
                     }
                 }
             }
-            // sort libraries after per day
+
+            if (libraryInProgress.daysInProgress < libraryInProgress.signUpDays)
+                libraryInProgress = libraries.remove(signUpItem);
+
+            // sort libraries after per day based on libraries weight
             sortLibraries();
+
+            if (libraryInProgress.daysInProgress < libraryInProgress.signUpDays)
+                // add libraryInProgress to first row again
+                libraries.add(0, libraryInProgress);
         }
         LocalDateTime end = LocalDateTime.now(ZoneOffset.UTC);
-        System.out.println(String.format("Took %sms for file : %s", ChronoUnit.MILLIS.between(start, end), fileName));
+        System.out.println(String.format("      SCORE %8d for FILE %28s lasts %10s miliseconds", filePoints, activeFile, ChronoUnit.MILLIS.between(start, end)));
     }
 
     private static void sortLibraries() {
         libraries.sort((l, r) -> {
-            if (l.calculateWeight() > r.calculateWeight())
+            if (l.weight > r.weight)
                 return -1;
-            else if (l.calculateWeight() < r.calculateWeight())
+            else if (l.weight < r.weight)
                 return 1;
             else return 0;
         });
@@ -106,9 +127,9 @@ public class Main {
         List<Integer> booksToShip;
         List<Integer> shippedBooks;
         int maxShipPerDay;
-        int totalScore;
         int daysInProgress;
-        boolean needCalculation;
+        int totalScore;
+        double weight;
 
         public Library(int index, int signUpDays, List<Integer> books, int maxShipPerDay) {
             this.index = index;
@@ -117,45 +138,49 @@ public class Main {
             this.shippedBooks = new ArrayList<Integer>();
             this.maxShipPerDay = maxShipPerDay;
             this.daysInProgress = 0;
-            this.needCalculation = true;
-            calculateTotalScore();
+            calculateTotalScoreAndWeight();
         }
 
         private void sortBooksBasedOnScore() {
-            booksToShip.sort((b1, b2) -> {
-                if (!set.contains(b1) && !set.contains(b2))
-                    return Integer.compare(scores[b1], scores[b2]);
-                else if (set.contains(b1) && set.contains(b2))
+            booksToShip.sort((book1, book2) -> {
+                if (!uniqueBooks.contains(book1) && !uniqueBooks.contains(book2))
+                    return Integer.compare(scores[book2], scores[book1]);
+                else if (uniqueBooks.contains(book1) && uniqueBooks.contains(book2))
                     return 0;
-                else if (set.contains(b1))
-                    return -1;
-                else
+                else if (uniqueBooks.contains(book1))
                     return 1;
+                else
+                    return -1;
             });
         }
 
-        private int calculateTotalScore() {
+        private int calculateTotalScoreAndWeight() {
             sortBooksBasedOnScore();
             totalScore = 0;
-            for (int i = 0; i < signUpDays * maxShipPerDay && i < booksToShip.size(); i++) {
+            int signUpRemainingDays = daysInProgress > signUpDays ? 0 : signUpDays;
+            for (int i = 0; i < signUpRemainingDays * maxShipPerDay && i < booksToShip.size(); i++) {
                 totalScore += scores[booksToShip.get(i)];
             }
+            weight = Double.valueOf(totalScore / signUpDays);
             return totalScore;
-        }
-
-        public double calculateWeight() {
-            needCalculation = false;
-            return Double.valueOf(totalScore / signUpDays);
         }
 
         public void shipBooks() {
             sortBooksBasedOnScore();
             for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
                 Integer book = booksToShip.remove(0);
-                set.add(book);
+                if (!uniqueBooks.contains(book)) {
+                    filePoints += scores[book];
+                    uniqueBooks.add(book);
+                }
                 shippedBooks.add(book);
             }
-            calculateTotalScore();
+            incrementDaysInProgress();
+            calculateTotalScoreAndWeight();
+        }
+
+        public void incrementDaysInProgress() {
+            daysInProgress++;
         }
 
     }
@@ -175,7 +200,7 @@ public class Main {
         }
 
         libraries.clear();
-        set.clear();
+        uniqueBooks.clear();
 
         for (int i = 0; i < totalLibrary * 2; i = i + 2) {
 
@@ -189,14 +214,14 @@ public class Main {
             for (int b = 0; b < numOfBooks; b++) {
                 books.add(Integer.valueOf(booksLine[b]));
             }
-            Library library = new Library(i / 2 , signUpdays, books, shipPerDay);
+            Library library = new Library(i / 2, signUpdays, books, shipPerDay);
             libraries.add(library);
         }
     }
 
     private static String readFile() {
         StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get("resource/" + fileName), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get("resource/" + activeFile), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s).append("\n"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -206,7 +231,7 @@ public class Main {
 
     private static void writeToFile(String[] input) throws IOException {
 
-        File fout = new File("output/" + fileName);
+        File fout = new File("output/" + activeFile);
         FileOutputStream fos = new FileOutputStream(fout);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));

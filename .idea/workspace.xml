@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="380846ec-e5f7-4e43-9344-2ac3873d368e" name="Default Changelist" comment="" />
+    <list default="true" id="380846ec-e5f7-4e43-9344-2ac3873d368e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/google-hashcode-2020/com/emrecosar/googlehashcode2020/Main$Library.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/google-hashcode-2020/com/emrecosar/googlehashcode2020/Main$Library.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/google-hashcode-2020/com/emrecosar/googlehashcode2020/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/google-hashcode-2020/com/emrecosar/googlehashcode2020/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/a_example.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/a_example.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/b_read_on.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/b_read_on.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/c_incunabula.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/c_incunabula.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/d_tough_choices.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/d_tough_choices.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/e_so_many_books.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/e_so_many_books.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/f_libraries_of_the_world.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/f_libraries_of_the_world.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/emrecosar/googlehashcode2020/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/emrecosar/googlehashcode2020/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1Y5jM94CUQREcWgCkkjbSbo652p" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -18,6 +34,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -74,62 +91,66 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="483" y="160" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1582241094816" />
-    <state width="550" height="544" key="DebuggerActiveHint" timestamp="1582417297936">
+    <state width="550" height="544" key="DebuggerActiveHint" timestamp="1583096704602">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="471" height="466" key="DebuggerActiveHint/0.0.1440.900@0.0.1440.900" timestamp="1582247280564" />
-    <state width="550" height="544" key="DebuggerActiveHint/0.0.1680.1050@0.0.1680.1050" timestamp="1582417297936" />
-    <state width="1638" height="353" key="GridCell.Tab.0.bottom" timestamp="1582544576128">
+    <state width="550" height="544" key="DebuggerActiveHint/0.0.1680.1050@0.0.1680.1050" timestamp="1583096704602" />
+    <state x="100" y="100" width="1480" height="850" key="DiffContextDialog" timestamp="1583078789535">
+      <screen x="0" y="23" width="1680" height="975" />
+    </state>
+    <state x="100" y="100" width="1480" height="850" key="DiffContextDialog/0.23.1680.975@0.23.1680.975" timestamp="1583078789535" />
+    <state width="1638" height="284" key="GridCell.Tab.0.bottom" timestamp="1583097222898">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1582248574013" />
-    <state width="1638" height="284" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1582444891260" />
+    <state width="1638" height="284" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1583097222898" />
     <state width="1638" height="167" key="GridCell.Tab.0.bottom/0.23.1680.975@0.23.1680.975" timestamp="1582409310819" />
     <state width="1638" height="353" key="GridCell.Tab.0.bottom/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576128" />
-    <state width="1638" height="353" key="GridCell.Tab.0.center" timestamp="1582544576127">
+    <state width="1638" height="284" key="GridCell.Tab.0.center" timestamp="1583097222897">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1582248574011" />
-    <state width="1638" height="284" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1582444891258" />
+    <state width="1638" height="284" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1583097222897" />
     <state width="1638" height="167" key="GridCell.Tab.0.center/0.23.1680.975@0.23.1680.975" timestamp="1582409310817" />
     <state width="1638" height="353" key="GridCell.Tab.0.center/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576127" />
-    <state width="1638" height="353" key="GridCell.Tab.0.left" timestamp="1582544576125">
+    <state width="1638" height="284" key="GridCell.Tab.0.left" timestamp="1583097222896">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1582248574010" />
-    <state width="1638" height="284" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1582444891257" />
+    <state width="1638" height="284" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1583097222896" />
     <state width="1638" height="167" key="GridCell.Tab.0.left/0.23.1680.975@0.23.1680.975" timestamp="1582409310816" />
     <state width="1638" height="353" key="GridCell.Tab.0.left/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576125" />
-    <state width="1638" height="353" key="GridCell.Tab.0.right" timestamp="1582544576127">
+    <state width="1638" height="284" key="GridCell.Tab.0.right" timestamp="1583097222898">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1582248574012" />
-    <state width="1638" height="284" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1582444891259" />
+    <state width="1638" height="284" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1583097222898" />
     <state width="1638" height="167" key="GridCell.Tab.0.right/0.23.1680.975@0.23.1680.975" timestamp="1582409310818" />
     <state width="1638" height="353" key="GridCell.Tab.0.right/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576127" />
-    <state width="1638" height="353" key="GridCell.Tab.1.bottom" timestamp="1582544576132">
+    <state width="1638" height="353" key="GridCell.Tab.1.bottom" timestamp="1583097109975">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="308" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1582248079782" />
-    <state width="1638" height="353" key="GridCell.Tab.1.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1582417563451" />
+    <state width="1638" height="353" key="GridCell.Tab.1.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1583097109975" />
     <state width="1638" height="353" key="GridCell.Tab.1.bottom/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576132" />
-    <state width="1638" height="353" key="GridCell.Tab.1.center" timestamp="1582544576130">
+    <state width="1638" height="353" key="GridCell.Tab.1.center" timestamp="1583097109973">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="308" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1582248079781" />
-    <state width="1638" height="353" key="GridCell.Tab.1.center/0.0.1680.1050@0.0.1680.1050" timestamp="1582417563450" />
+    <state width="1638" height="353" key="GridCell.Tab.1.center/0.0.1680.1050@0.0.1680.1050" timestamp="1583097109973" />
     <state width="1638" height="353" key="GridCell.Tab.1.center/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576130" />
-    <state width="1638" height="353" key="GridCell.Tab.1.left" timestamp="1582544576129">
+    <state width="1638" height="353" key="GridCell.Tab.1.left" timestamp="1583097109972">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="308" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1582248079780" />
-    <state width="1638" height="353" key="GridCell.Tab.1.left/0.0.1680.1050@0.0.1680.1050" timestamp="1582417563449" />
+    <state width="1638" height="353" key="GridCell.Tab.1.left/0.0.1680.1050@0.0.1680.1050" timestamp="1583097109972" />
     <state width="1638" height="353" key="GridCell.Tab.1.left/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576129" />
-    <state width="1638" height="353" key="GridCell.Tab.1.right" timestamp="1582544576131">
+    <state width="1638" height="353" key="GridCell.Tab.1.right" timestamp="1583097109974">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1398" height="308" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1582248079781" />
-    <state width="1638" height="353" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1582417563450" />
+    <state width="1638" height="353" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1583097109974" />
     <state width="1638" height="353" key="GridCell.Tab.1.right/1680.0.1920.1200/0.0.1680.1050@0.0.1680.1050" timestamp="1582544576131" />
     <state x="646" y="450" key="ReplaceDuplicatesPrompt" timestamp="1582416936441">
       <screen x="0" y="0" width="1680" height="1050" />
@@ -144,5 +165,26 @@
     </state>
     <state x="385" y="196" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1582245244043" />
     <state x="449" y="229" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1582414958147" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/emrecosar/googlehashcode2020/Main.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/emrecosar/googlehashcode2020/Main.java</url>
+          <line>108</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/emrecosar/googlehashcode2020/Main.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
