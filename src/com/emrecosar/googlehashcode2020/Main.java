@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
@@ -30,9 +31,11 @@ public class Main {
     static int totalPoints;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-        System.out.println("GOOGLE HASHCODE 2020 ONLINE QUALIFICATION ROUND STATEMENT SOLUTION");
-        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
+        System.out.println("GOOGLE HASHCODE 2020 ONLINE QUALIFICATION STATEMENT ");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
+        System.out.println("   SCORE |                         FILE |   TIME(ms)");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
         List<String> files = collectFiles();
 
@@ -54,9 +57,8 @@ public class Main {
             writeToFile(outputs);
             totalPoints += filePoints;
         }
-        System.out.println();
-        System.out.println(String.format("TOTAL SCORE %8d", totalPoints));
-        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
+        System.out.println(String.format("%8d in TOTAL", totalPoints));
     }
 
     private static void orderLibrariesBasedOnNumberOfInProgressDays() {
@@ -90,33 +92,32 @@ public class Main {
                     libraryInProgress = library;
                     library.incrementDaysInProgress(); // sign up in progress
                 } else {
-                    if (library.daysInProgress >= library.signUpDays && !library.booksToShip.isEmpty()) {
+                    if (library.daysInProgress >= library.signUpDays) {
                         library.shipBooks(); // ship books if any
                     }
                 }
             }
-
-            if (libraryInProgress.daysInProgress < libraryInProgress.signUpDays)
-                libraryInProgress = libraries.remove(signUpItem);
-
-            // sort libraries after per day based on libraries weight
-            sortLibraries();
-
-            if (libraryInProgress.daysInProgress < libraryInProgress.signUpDays)
-                // add libraryInProgress to first row again
-                libraries.add(0, libraryInProgress);
+            // sort libraries after per signup process ends
+            if (libraryInProgress.daysInProgress == libraryInProgress.signUpDays)
+                sortLibraries();
         }
         LocalDateTime end = LocalDateTime.now(ZoneOffset.UTC);
-        System.out.println(String.format("      SCORE %8d for FILE %28s lasts %10s miliseconds", filePoints, activeFile, ChronoUnit.MILLIS.between(start, end)));
+        System.out.println(String.format("%8d | %28s | %10s", filePoints, activeFile, ChronoUnit.MILLIS.between(start, end)));
     }
 
     private static void sortLibraries() {
+        // calculate weight again
+        for (int i = 0; i < libraries.size(); i++) {
+            libraries.get(i).calculateTotalScoreAndWeight();
+        }
         libraries.sort((l, r) -> {
             if (l.weight > r.weight)
                 return -1;
             else if (l.weight < r.weight)
                 return 1;
-            else return 0;
+            else {
+                    return 0;
+            }
         });
     }
 
@@ -141,7 +142,11 @@ public class Main {
             calculateTotalScoreAndWeight();
         }
 
-        private void sortBooksBasedOnScore() {
+        /**
+         * At first, need sorting for all
+         * Later, only pick valuable ones and then put in the beginning
+         */
+        private void sortBooksToShipBasedOnScore() {
             booksToShip.sort((book1, book2) -> {
                 if (!uniqueBooks.contains(book1) && !uniqueBooks.contains(book2))
                     return Integer.compare(scores[book2], scores[book1]);
@@ -155,9 +160,9 @@ public class Main {
         }
 
         private int calculateTotalScoreAndWeight() {
-            sortBooksBasedOnScore();
+            sortBooksToShipBasedOnScore();
             totalScore = 0;
-            int signUpRemainingDays = daysInProgress > signUpDays ? 0 : signUpDays;
+            int signUpRemainingDays = daysInProgress >= signUpDays ? 0 : signUpDays;
             for (int i = 0; i < signUpRemainingDays * maxShipPerDay && i < booksToShip.size(); i++) {
                 totalScore += scores[booksToShip.get(i)];
             }
@@ -166,7 +171,7 @@ public class Main {
         }
 
         public void shipBooks() {
-            sortBooksBasedOnScore();
+            sortBooksToShipBasedOnScore();
             for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
                 Integer book = booksToShip.remove(0);
                 if (!uniqueBooks.contains(book)) {
@@ -176,7 +181,6 @@ public class Main {
                 shippedBooks.add(book);
             }
             incrementDaysInProgress();
-            calculateTotalScoreAndWeight();
         }
 
         public void incrementDaysInProgress() {
@@ -210,9 +214,14 @@ public class Main {
             int shipPerDay = Integer.valueOf(libraryAttr[2]);
 
             String[] booksLine = lines[i + 3].split(" ");
-            List<Integer> books = new ArrayList<Integer>();
+            List<Integer> books = new ArrayList<>();
+            HashSet<Integer> uniqueBooks = new HashSet<>();
             for (int b = 0; b < numOfBooks; b++) {
-                books.add(Integer.valueOf(booksLine[b]));
+                Integer book = Integer.valueOf(booksLine[b]);
+                books.add(book);
+                if (!uniqueBooks.contains(book)) {
+                    uniqueBooks.add(book);
+                }
             }
             Library library = new Library(i / 2, signUpdays, books, shipPerDay);
             libraries.add(library);
