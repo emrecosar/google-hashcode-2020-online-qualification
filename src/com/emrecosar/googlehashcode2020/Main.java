@@ -25,6 +25,7 @@ public class Main {
     static int totalBooks;
     static int totalLibrary;
     static int totalDayToProcess;
+    static int currentDayInProcess;
     static ArrayList<Library> libraries = new ArrayList<>();
     static String activeFile;
     static int filePoints;
@@ -41,6 +42,7 @@ public class Main {
 
         for (String file : files) {
 
+            currentDayInProcess = 0;
             filePoints = 0;
             activeFile = file;
 
@@ -83,7 +85,7 @@ public class Main {
         sortLibraries();
 
         Library libraryInProgress = libraries.get(0);
-        for (int d = 1; d <= totalDayToProcess; d++) {
+        for (currentDayInProcess = 1; currentDayInProcess <= totalDayToProcess; currentDayInProcess++) {
             int signUpItem = -1;
             for (int l = 0; l < libraries.size(); l++) {
                 Library library = libraries.get(l);
@@ -107,15 +109,18 @@ public class Main {
 
     private static void sortLibraries() {
         // calculate weight again
-        for (int i = 0; i < libraries.size(); i++) {
-            libraries.get(i).calculateTotalScoreAndWeight();
-        }
+        libraries.parallelStream().forEach( l -> l.calculateTotalScoreAndWeight());
         libraries.sort((l, r) -> {
             if (l.weight > r.weight)
                 return -1;
             else if (l.weight < r.weight)
                 return 1;
             else {
+                if (l.totalScore > r.totalScore)
+                    return 1;
+                else if (l.totalScore < r.totalScore)
+                    return -1;
+                else
                     return 0;
             }
         });
@@ -162,7 +167,7 @@ public class Main {
         private int calculateTotalScoreAndWeight() {
             sortBooksToShipBasedOnScore();
             totalScore = 0;
-            int signUpRemainingDays = daysInProgress >= signUpDays ? 0 : signUpDays;
+            int signUpRemainingDays = daysInProgress >= signUpDays ? 0 : ( signUpDays >= totalDayToProcess - currentDayInProcess ? 0 : signUpDays );
             for (int i = 0; i < signUpRemainingDays * maxShipPerDay && i < booksToShip.size(); i++) {
                 totalScore += scores[booksToShip.get(i)];
             }
@@ -171,8 +176,8 @@ public class Main {
         }
 
         public void shipBooks() {
-            sortBooksToShipBasedOnScore();
             for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
+                sortBooksToShipBasedOnScore();
                 Integer book = booksToShip.remove(0);
                 if (!uniqueBooks.contains(book)) {
                     filePoints += scores[book];
