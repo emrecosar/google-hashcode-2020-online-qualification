@@ -125,32 +125,41 @@ public class Main {
                 else if (l.signUpDays < r.signUpDays)
                     return -1;
                 else {
-
-                        // sort library based on their maxShipPerDay descending
-                        if (l.maxShipPerDay > r.maxShipPerDay)
+                    // sort library based on their maxShipPerDay descending
+                    if (l.maxShipPerDay > r.maxShipPerDay)
+                        return -1;
+                    else if (l.maxShipPerDay < r.maxShipPerDay)
+                        return 1;
+                    else {
+                        // sort library based on their booksToShip descending
+                        if (l.totalUniqueBooks.size() > r.totalUniqueBooks.size())
                             return -1;
-                        else if (l.maxShipPerDay < r.maxShipPerDay)
+                        else if (l.totalUniqueBooks.size() < r.totalUniqueBooks.size())
                             return 1;
                         else {
-                            // sort library based on their booksToShip descending
-                            if (l.booksToShip.size() > r.booksToShip.size())
+                            return 0;
+                            /*
+                            // sort library based on their totalScore descending
+                            if (l.totalScore > r.totalScore)
                                 return -1;
-                            else if (l.booksToShip.size() < r.booksToShip.size())
+                            else if (l.totalScore < r.totalScore)
                                 return 1;
                             else {
                                 return 0;
-                                /*
-                                if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() < r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
-                                    return 1;
-                                else if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() > r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
-                                    return -1;
-                                else {
-                                    return 0;
-                                }
-                                */
                             }
-                        }
 
+                            // sort library based on their remaining unique books descending
+                            if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() < r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
+                                return 1;
+                            else if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() > r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
+                                return -1;
+                            else {
+                                return 0;
+                            }
+
+                            */
+                        }
+                    }
                 }
             }
         });
@@ -179,12 +188,12 @@ public class Main {
             this.maxShipPerDay = maxShipPerDay;
             this.daysInProgress = 0;
             calculateTotalScoreAndWeight();
-            fillUniqueShippedBooks();
+            fillTotalUniqueBooks();
         }
 
-        public void fillUniqueShippedBooks() {
+        public void fillTotalUniqueBooks() {
             for(Integer book : booksToShip) {
-                uniqueShippedBooks.add(book);
+                totalUniqueBooks.add(book);
             }
         }
 
