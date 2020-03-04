@@ -30,6 +30,7 @@ public class Main {
     static String activeFile;
     static int filePoints;
     static int totalPoints;
+    static long totalTimeInMilliSeconds;
 
     public static void main(String[] args) throws IOException {
         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
@@ -60,7 +61,7 @@ public class Main {
             totalPoints += filePoints;
         }
         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
-        System.out.println(String.format("%8d in TOTAL", totalPoints));
+        System.out.println(String.format("%8d   %28s   %10s", totalPoints, "-- TOTAL --", totalTimeInMilliSeconds));
     }
 
     private static void orderLibrariesBasedOnNumberOfInProgressDays() {
@@ -84,7 +85,7 @@ public class Main {
         // sort libraries as initial process
         sortLibraries();
 
-        Library libraryInProgress = libraries.get(0);
+        Library libraryInProgress = null;
         for (currentDayInProcess = 1; currentDayInProcess <= totalDayToProcess; currentDayInProcess++) {
             int signUpItem = -1;
             for (int l = 0; l < libraries.size(); l++) {
@@ -103,25 +104,59 @@ public class Main {
             if (libraryInProgress.daysInProgress == libraryInProgress.signUpDays)
                 sortLibraries();
         }
-        LocalDateTime end = LocalDateTime.now(ZoneOffset.UTC);
-        System.out.println(String.format("%8d | %28s | %10s", filePoints, activeFile, ChronoUnit.MILLIS.between(start, end)));
+        long interval = ChronoUnit.MILLIS.between(start, LocalDateTime.now(ZoneOffset.UTC));
+        totalTimeInMilliSeconds += interval;
+        System.out.println(String.format("%8d | %28s | %10s", filePoints, activeFile, interval));
     }
 
     private static void sortLibraries() {
-        // calculate weight again
+        // calculate weight again per library
         libraries.parallelStream().forEach( l -> l.calculateTotalScoreAndWeight());
+        // sort library based on their weight descending
         libraries.sort((l, r) -> {
             if (l.weight > r.weight)
                 return -1;
             else if (l.weight < r.weight)
                 return 1;
             else {
+                // if weights are the same, less totalScore should be signed-up first
                 if (l.totalScore > r.totalScore)
                     return 1;
                 else if (l.totalScore < r.totalScore)
                     return -1;
-                else
-                    return 0;
+                else {
+                    // if totalScores are the same, more signup days should be signed-up first
+                    if (l.signUpDays > r.signUpDays)
+                        return -1;
+                    else if (l.signUpDays < r.signUpDays)
+                        return 1;
+                    else {
+                        // if signup days are the same, more maxShipPerDay should be signed-up first
+                        if (l.maxShipPerDay > r.maxShipPerDay)
+                            return -1;
+                        else if (l.maxShipPerDay < r.maxShipPerDay)
+                            return 1;
+                        else {
+                            // if maxShipPerDay are the same, more booksToShip should be signed-up first
+                            if (l.booksToShip.size() > r.booksToShip.size())
+                                return -1;
+                            else if (l.booksToShip.size() < r.booksToShip.size())
+                                return 1;
+                            else {
+                                return 0;
+                                /*
+                                if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() < r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
+                                    return 1;
+                                else if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() > r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
+                                    return -1;
+                                else {
+                                    return 0;
+                                }
+                                */
+                            }
+                        }
+                    }
+                }
             }
         });
     }
@@ -129,9 +164,11 @@ public class Main {
     private static class Library {
 
         int index;
-        int signUpDays;
         List<Integer> booksToShip;
         List<Integer> shippedBooks;
+        HashSet<Integer> uniqueShippedBooks;
+        HashSet<Integer> totalUniqueBooks;
+        int signUpDays;
         int maxShipPerDay;
         int daysInProgress;
         int totalScore;
@@ -142,9 +179,18 @@ public class Main {
             this.signUpDays = signUpDays;
             this.booksToShip = books;
             this.shippedBooks = new ArrayList<Integer>();
+            this.uniqueShippedBooks = new HashSet<>();
+            this.totalUniqueBooks = new HashSet<>();
             this.maxShipPerDay = maxShipPerDay;
             this.daysInProgress = 0;
             calculateTotalScoreAndWeight();
+            fillUniqueShippedBooks();
+        }
+
+        public void fillUniqueShippedBooks() {
+            for(Integer book : booksToShip) {
+                uniqueShippedBooks.add(book);
+            }
         }
 
         /**
@@ -176,13 +222,14 @@ public class Main {
         }
 
         public void shipBooks() {
+            sortBooksToShipBasedOnScore();
             for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
-                sortBooksToShipBasedOnScore();
                 Integer book = booksToShip.remove(0);
                 if (!uniqueBooks.contains(book)) {
                     filePoints += scores[book];
                     uniqueBooks.add(book);
                 }
+                uniqueShippedBooks.add(book);
                 shippedBooks.add(book);
             }
             incrementDaysInProgress();
@@ -217,6 +264,9 @@ public class Main {
             int numOfBooks = Integer.valueOf(libraryAttr[0]);
             int signUpdays = Integer.valueOf(libraryAttr[1]);
             int shipPerDay = Integer.valueOf(libraryAttr[2]);
+
+            if(signUpdays > totalDayToProcess)
+                continue;
 
             String[] booksLine = lines[i + 3].split(" ");
             List<Integer> books = new ArrayList<>();
