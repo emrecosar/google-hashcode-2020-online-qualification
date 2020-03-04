@@ -119,25 +119,25 @@ public class Main {
             else if (l.weight < r.weight)
                 return 1;
             else {
-                // if weights are the same, less totalScore should be signed-up first
-                if (l.totalScore > r.totalScore)
+                // sort library based on their signUpDays ascending
+                if (l.signUpDays > r.signUpDays)
                     return 1;
-                else if (l.totalScore < r.totalScore)
+                else if (l.signUpDays < r.signUpDays)
                     return -1;
                 else {
-                    // if totalScores are the same, more signup days should be signed-up first
-                    if (l.signUpDays > r.signUpDays)
+                    // sort library based on their totalScore descending
+                    if (l.totalScore > r.totalScore)
                         return -1;
-                    else if (l.signUpDays < r.signUpDays)
+                    else if (l.totalScore < r.totalScore)
                         return 1;
                     else {
-                        // if signup days are the same, more maxShipPerDay should be signed-up first
+                        // sort library based on their maxShipPerDay descending
                         if (l.maxShipPerDay > r.maxShipPerDay)
                             return -1;
                         else if (l.maxShipPerDay < r.maxShipPerDay)
                             return 1;
                         else {
-                            // if maxShipPerDay are the same, more booksToShip should be signed-up first
+                            // sort library based on their booksToShip descending
                             if (l.booksToShip.size() > r.booksToShip.size())
                                 return -1;
                             else if (l.booksToShip.size() < r.booksToShip.size())
