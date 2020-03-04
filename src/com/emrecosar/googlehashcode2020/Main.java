@@ -276,7 +276,7 @@ public class Main {
 
     private static String readFile() {
         StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get("resource/" + activeFile), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get("input/" + activeFile), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s).append("\n"));
         } catch (IOException e) {
             e.printStackTrace();
