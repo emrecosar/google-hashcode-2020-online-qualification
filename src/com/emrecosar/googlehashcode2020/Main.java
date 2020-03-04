@@ -125,12 +125,7 @@ public class Main {
                 else if (l.signUpDays < r.signUpDays)
                     return -1;
                 else {
-                    // sort library based on their totalScore descending
-                    if (l.totalScore > r.totalScore)
-                        return -1;
-                    else if (l.totalScore < r.totalScore)
-                        return 1;
-                    else {
+
                         // sort library based on their maxShipPerDay descending
                         if (l.maxShipPerDay > r.maxShipPerDay)
                             return -1;
@@ -155,7 +150,7 @@ public class Main {
                                 */
                             }
                         }
-                    }
+
                 }
             }
         });
