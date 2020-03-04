@@ -85,13 +85,11 @@ public class Main {
         // sort libraries as initial process
         sortLibraries();
 
-        Library libraryInProgress = null;
         for (currentDayInProcess = 1; currentDayInProcess <= totalDayToProcess; currentDayInProcess++) {
-            int signUpItem = -1;
+            Library libraryInProgress = null;
             for (int l = 0; l < libraries.size(); l++) {
                 Library library = libraries.get(l);
-                if (signUpItem == -1 && library.daysInProgress < library.signUpDays) {
-                    signUpItem = l;
+                if (libraryInProgress == null && library.daysInProgress < library.signUpDays) {
                     libraryInProgress = library;
                     library.incrementDaysInProgress(); // sign up in progress
                 } else {
@@ -100,8 +98,8 @@ public class Main {
                     }
                 }
             }
-            // sort libraries after per signup process ends
-            if (libraryInProgress.daysInProgress == libraryInProgress.signUpDays)
+            // sort libraries after per library's signup process completed for selecting the next signup library
+            if (libraryInProgress == null || (libraryInProgress != null && libraryInProgress.daysInProgress == libraryInProgress.signUpDays))
                 sortLibraries();
         }
         long interval = ChronoUnit.MILLIS.between(start, LocalDateTime.now(ZoneOffset.UTC));
@@ -215,7 +213,7 @@ public class Main {
         }
 
         public void shipBooks() {
-            for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
+            for (int i = 0; i < maxShipPerDay && !booksToShip.isEmpty(); i++) {
                 sortBooksToShipBasedOnScore();
                 Integer book = booksToShip.remove(0);
                 if (!uniqueBooks.contains(book)) {
@@ -320,6 +318,5 @@ public class Main {
         result = totalSignedUpLibraryNumber + " \n" + result;
         return result.split("\\n");
     }
-
 
 }
