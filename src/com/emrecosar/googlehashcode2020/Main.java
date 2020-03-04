@@ -131,14 +131,15 @@ public class Main {
                     else if (l.maxShipPerDay < r.maxShipPerDay)
                         return 1;
                     else {
-                        // sort library based on their booksToShip descending
+                        // sort library based on their totalUniqueBooks descending
                         if (l.totalUniqueBooks.size() > r.totalUniqueBooks.size())
                             return -1;
                         else if (l.totalUniqueBooks.size() < r.totalUniqueBooks.size())
                             return 1;
-                        else {
+                        else
                             return 0;
-                            /*
+                        /*
+                        else {
                             // sort library based on their totalScore descending
                             if (l.totalScore > r.totalScore)
                                 return -1;
@@ -147,18 +148,8 @@ public class Main {
                             else {
                                 return 0;
                             }
-
-                            // sort library based on their remaining unique books descending
-                            if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() < r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
-                                return 1;
-                            else if (l.totalUniqueBooks.size() - l.uniqueShippedBooks.size() > r.totalUniqueBooks.size() - r.uniqueShippedBooks.size())
-                                return -1;
-                            else {
-                                return 0;
-                            }
-
-                            */
                         }
+                        */
                     }
                 }
             }
@@ -170,7 +161,6 @@ public class Main {
         int index;
         List<Integer> booksToShip;
         List<Integer> shippedBooks;
-        HashSet<Integer> uniqueShippedBooks;
         HashSet<Integer> totalUniqueBooks;
         int signUpDays;
         int maxShipPerDay;
@@ -183,7 +173,6 @@ public class Main {
             this.signUpDays = signUpDays;
             this.booksToShip = books;
             this.shippedBooks = new ArrayList<Integer>();
-            this.uniqueShippedBooks = new HashSet<>();
             this.totalUniqueBooks = new HashSet<>();
             this.maxShipPerDay = maxShipPerDay;
             this.daysInProgress = 0;
@@ -219,21 +208,21 @@ public class Main {
             totalScore = 0;
             int signUpRemainingDays = daysInProgress >= signUpDays ? 0 : ( signUpDays >= totalDayToProcess - currentDayInProcess ? 0 : signUpDays );
             for (int i = 0; i < signUpRemainingDays * maxShipPerDay && i < booksToShip.size(); i++) {
-                totalScore += scores[booksToShip.get(i)];
+                totalScore += uniqueBooks.contains(booksToShip.get(i)) ? 0 : scores[booksToShip.get(i)];
             }
             weight = Double.valueOf(totalScore / signUpDays);
             return totalScore;
         }
 
         public void shipBooks() {
-            sortBooksToShipBasedOnScore();
             for (int i = 0; i < maxShipPerDay && i < booksToShip.size(); i++) {
+                sortBooksToShipBasedOnScore();
                 Integer book = booksToShip.remove(0);
                 if (!uniqueBooks.contains(book)) {
                     filePoints += scores[book];
                     uniqueBooks.add(book);
                 }
-                uniqueShippedBooks.add(book);
+                totalUniqueBooks.remove(book);
                 shippedBooks.add(book);
             }
             incrementDaysInProgress();
